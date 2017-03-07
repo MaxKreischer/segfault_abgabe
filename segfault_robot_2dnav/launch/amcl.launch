@@ -1,0 +1,8 @@
+<launch>
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <remap from="scan" to="scan_filtered"/>
+    <param name="base_frame_id" value="base_footprint" />
+    <param name="use_map_topic" value="true"/>
+    <param name="first_map_only" value="true" />
+  </node>
+</launch>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+	<master auto="start"/>
+	<!-- Run the necessary nodes to bring up the car -->
+  <node pkg="segfault_nav_ctrl" type="segfault_nav_ctrl_node" name="segfault_nav_ctrl" output="screen"/>
+</launch>

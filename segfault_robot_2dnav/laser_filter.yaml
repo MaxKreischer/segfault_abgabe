@@ -1,0 +1,23 @@
+scan_filter_chain:
+- type: LaserArrayFilter
+  name: laser_median_filter
+  params: 
+    range_filter_chain:
+      - name: median_5
+        type: MultiChannelMedianFilterFloat 
+        params:
+          number_of_observations: 39
+          #unused: 10
+    intensity_filter_chain:
+      - name: median_5
+        type: MultiChannelMedianFilterFloat 
+        params:
+          number_of_observations: 39
+          #unused: 10
+- name: shadows
+  type: ScanShadowsFilter
+  params:
+    min_angle: 10
+    max_angle: 70
+    neighbors: 20
+    window: 0

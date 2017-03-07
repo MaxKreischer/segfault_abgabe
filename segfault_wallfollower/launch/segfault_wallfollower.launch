@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+	<master auto="start"/>
+	<!-- Run the necessary nodes to bring up the car -->
+  <node pkg="segfault_wallfollower" type="segfault_wallfollower_node" name="segfault_wallfollower" output="screen"/>
+</launch>

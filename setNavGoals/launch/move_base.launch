@@ -1,0 +1,8 @@
+<launch>
+  <master auto="start"/>
+
+  <!-- Run the map server -->
+  <node name="setNavGoals" pkg="setNavGoals" type="setNavGoals" output="screen"/>
+
+
+</launch>

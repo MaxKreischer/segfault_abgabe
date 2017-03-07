@@ -1,0 +1,30 @@
+transform_tolerance: 0.3
+obstacle_range: 3.0 #2.0
+raytrace_range: 3.5
+footprint: [[-0.325,-0.10], [0.075, -0.10], [0.075, 0.10], [-0.325, 0.10]]
+        #[[0.175, 0.0985], [-0.175, 0.0985], [-0.175, -0.0985], [0.175, -0.0985]]from max,replaced from simu
+#robot_radius: ir_of_robot
+
+max_obstacle_height: 0.4
+map_type: costmap
+
+obstacle_layer:
+ enabled: true
+ obstacle_range: 3.0
+ raytrace_range: 3.5
+ cost_scaling_factor: 10
+ track_unknown_space: true
+ combination_method: 1
+ observation_sources: laser_scan_sensor
+ laser_scan_sensor: {sensor_frame: base_laser, data_type: LaserScan, topic: scan_filtered, marking: true, clearing: true}
+
+inflation_layer:
+  enabled:              true
+  cost_scaling_factor:  10.0  # exponential rate at which the obstacle cost drops off (default: 10)
+  inflation_radius:     0.2  # max. distance from an obstacle at which costs are incurred for planning paths.
+
+static_layer:
+  enabled:              true
+  map_topic:            "/map"
+
+#point_cloud_sensor: {sensor_frame: frame_name, data_type: PointCloud, topic: topic_name, marking: true, clearing: true}

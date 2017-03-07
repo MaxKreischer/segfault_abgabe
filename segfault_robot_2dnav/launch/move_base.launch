@@ -1,0 +1,50 @@
+<launch>
+  <master auto="start"/>
+  <!---Depthimage to Laserscan -->
+    <node name="depthimage_to_laserscan" pkg="depthimage_to_laserscan" type="depthimage_to_laserscan">
+        <remap from="image" to="kinect2/sd/image_depth"/>
+        <remap from="camera_info" to="kinect2/sd/camera_info"/>
+        <param name="output_frame_id" value="base_laser"/>
+        <param name="scan_height" value="1"/>
+        <param name="scan_time" value="0.05"/>
+        <param name="range_min" value="0.1"/>
+        <param name="range_max" value="7.0"/>
+    </node>
+
+<node pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen" name="laser_filter">
+      <!--<remap from="scan" to="base_scan" />-->
+      <rosparam command="load" file="$(find segfault_robot_2dnav)/laser_filter.yaml"/>
+</node>
+
+  <!-- Run the map server -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find segfault_robot_2dnav)/data/Maps/FG_ES_RS_map/map.yaml"/>
+<!-- use this node only in real scenario not in simulation -->
+ <node pkg="tf" type="static_transform_publisher" name ="laser_broadcaster" args="0 0 0.16 0 0 0 1 base_footprint base_laser 10" />
+
+ <!--node pkg="tf" type="static_transform_publisher" name ="footprint_broadcaster" args="0 0 0 0 0 0 1 map odom 10" /-->
+
+<include file="$(find segfault_robot_2dnav)/launch/amcl.launch"/>
+
+
+  <!-- *************** Navigation ************* Hidden Message:Max mach Kommentare für andere -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find segfault_robot_2dnav)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find segfault_robot_2dnav)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find segfault_robot_2dnav)/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find segfault_robot_2dnav)/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find segfault_robot_2dnav)/base_local_planner_params.yaml" command="load" />
+    <!-- Here we load our costmap conversion settings -->
+    <rosparam file="$(find segfault_robot_2dnav)/costmap_converter_params.yaml" command="load" />
+
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <param name="planner_frequency" value="2.0" />
+    <param name="planner_patience" value="5.0" />
+
+    <!--<param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />-->
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <param name="controller_frequency" value="5.0" /> #value was 20, edited to 1 for less warnings
+    <param name="controller_patience" value="15.0" />
+
+ </node>
+
+</launch>
